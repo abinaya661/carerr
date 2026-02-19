@@ -769,7 +769,33 @@
     window.scrollTo({top:0,behavior:"smooth"});
   }
 
-  function showResults(){
+  function showResults(){// Submit to Netlify function → Neon DB
+const payload = {
+  name:              answers["q2"] || "",
+  age:               answers["q4"] || "",
+  color_palette:     colorLabels[answers["q9"]] || "",
+  music_vibe:        musicLabels[answers["q7"]] || "",
+  fashion_style:     fashionLabels[answers["q13"]] || "",
+  fave_food:         answers["q11"] || "",
+  dream_destination: answers["q15"] || "",
+  life_era:          eraLabels[answers["q17"]] || "",
+  superpower:        superLabels[answers["q18"]] || "",
+  career_type:       data.emoji + " " + data.name,
+  personal_vibe:     answers["q20"] || "",
+  score_r: riasecScores.R,
+  score_i: riasecScores.I,
+  score_a: riasecScores.A,
+  score_s: riasecScores.S,
+  score_e: riasecScores.E,
+  score_c: riasecScores.C
+};
+
+fetch("/.netlify/functions/submit", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify(payload)
+}).then(r => r.json()).then(console.log).catch(console.error);
+
     // Tally RIASEC
     riasecScores = {R:0,I:0,A:0,S:0,E:0,C:0};
     riasecQ.forEach(n=>{
